@@ -53,7 +53,7 @@ export class ValidationService {
     result.syntaxValid = syntaxResult.valid;
     if (!syntaxResult.valid) {
       result.status = ValidationStatus.INVALID;
-      result.reason = syntaxResult.reason;
+      result.reason = syntaxResult.reason || "Invalid";
       result.score = 0;
       result.durationMs = Date.now() - start;
       return this.repo.save(result);
@@ -71,7 +71,7 @@ export class ValidationService {
     result.isRoleAccount = ROLE_PREFIXES.some((p) => local === p || local.startsWith(p + '.'));
 
     // 5. Typo suggestion
-    result.suggestion = this.suggestTypo(domain);
+    result.suggestion = this.suggestTypo(domain) as any;
 
     // 6. MX lookup
     try {

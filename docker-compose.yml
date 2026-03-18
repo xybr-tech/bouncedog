@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: bouncedog
+      POSTGRES_PASSWORD: bouncedog
+      POSTGRES_DB: bouncedog
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "4000:3000"
+    environment:
+      DATABASE_URL: postgresql://bouncedog:bouncedog@db:5432/bouncedog
+      JWT_SECRET: bouncedog-dev-secret
+      NODE_ENV: development
+      CORS_ORIGIN: "*"
+      PORT: "3000"
+    depends_on:
+      - db
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_API_URL: http://192.168.15.100:4000/api
+    ports:
+      - "4001:3000"
+    restart: unless-stopped
+
+volumes:
+  pgdata:

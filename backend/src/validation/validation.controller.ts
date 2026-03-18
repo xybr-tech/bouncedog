@@ -45,7 +45,7 @@ export class ValidationController {
     const { userId, keyId } = await this.resolveApiKey(apiKey);
     await this.checkQuota(userId, dto.emails.length);
 
-    const results = [];
+    const results: any[] = [];
     for (const email of dto.emails) {
       const r = await this.validationService.validateEmail(email, userId);
       results.push(this.formatResult(r));
