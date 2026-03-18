@@ -9,8 +9,9 @@ import { Mail, Key, Upload, BarChart3, CheckCircle2, XCircle, AlertTriangle, Cop
 type Tab = 'validate' | 'keys' | 'lists' | 'history';
 
 function StatusBadge({ status }: { status: string }) {
+  const labels: Record<string, string> = { valid: 'Válido', invalid: 'Inválido', risky: 'Arriscado', unknown: 'Desconhecido' };
   const c: Record<string, string> = { valid: 'bg-green-100 text-green-700', invalid: 'bg-red-100 text-red-700', risky: 'bg-yellow-100 text-yellow-700', unknown: 'bg-gray-100 text-gray-700' };
-  return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${c[status] || c.unknown}`}>{status}</span>;
+  return <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${c[status] || c.unknown}`}>{labels[status] || status}</span>;
 }
 
 function Check({ label, value, invert, neutral }: { label: string; value: boolean; invert?: boolean; neutral?: boolean }) {
@@ -68,7 +69,7 @@ export default function Dashboard() {
   };
 
   const revokeKey = async (id: string) => {
-    if (!confirm('Revoke this API key?')) return;
+    if (!confirm('Revogar esta chave de API?')) return;
     try { await api.revokeKey(id); loadKeys(); } catch {}
   };
 
@@ -84,10 +85,10 @@ export default function Dashboard() {
   };
 
   const tabs = [
-    { id: 'validate' as Tab, label: 'Validate', icon: Mail },
-    { id: 'keys' as Tab, label: 'API Keys', icon: Key },
-    { id: 'lists' as Tab, label: 'Bulk Lists', icon: Upload },
-    { id: 'history' as Tab, label: 'History', icon: BarChart3 },
+    { id: 'validate' as Tab, label: 'Validar', icon: Mail },
+    { id: 'keys' as Tab, label: 'Chaves API', icon: Key },
+    { id: 'lists' as Tab, label: 'Listas', icon: Upload },
+    { id: 'history' as Tab, label: 'Histórico', icon: BarChart3 },
   ];
 
   return (
@@ -99,7 +100,7 @@ export default function Dashboard() {
             <span className="font-bold">BounceDog</span>
           </div>
           <div className="flex items-center gap-4">
-            {stats && <span className="text-sm text-gray-500">{stats.used}/{stats.limit} validations ({stats.plan})</span>}
+            {stats && <span className="text-sm text-gray-500">{stats.used}/{stats.limit} validações ({stats.plan})</span>}
             <span className="text-sm text-gray-700">{user?.email}</span>
             <button onClick={logout} className="text-gray-400 hover:text-gray-600"><LogOut className="w-4 h-4" /></button>
           </div>
@@ -118,14 +119,14 @@ export default function Dashboard() {
 
         {tab === 'validate' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold mb-4">Validate an email</h2>
+            <h2 className="text-lg font-semibold mb-4">Validar um email</h2>
             <div className="flex gap-2 mb-6">
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && validate()} placeholder="test@example.com"
+                onKeyDown={(e) => e.key === 'Enter' && validate()} placeholder="teste@exemplo.com.br"
                 className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-400 outline-none" />
               <button onClick={validate} disabled={loading}
                 className="px-6 py-2.5 bg-dog-500 hover:bg-brand-600 text-white font-medium rounded-lg disabled:opacity-50">
-                {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : 'Validate'}
+                {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : 'Validar'}
               </button>
             </div>
             {result && result.status !== 'error' && (
@@ -142,18 +143,18 @@ export default function Dashboard() {
                 </div>
                 <div className="p-4">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                    <Check label="Syntax" value={result.syntaxValid} />
-                    <Check label="MX Records" value={result.mxFound} />
+                    <Check label="Sintaxe" value={result.syntaxValid} />
+                    <Check label="Registros MX" value={result.mxFound} />
                     <Check label="SMTP" value={result.smtpConnectable} />
-                    <Check label="Inbox" value={result.inboxExists} />
+                    <Check label="Caixa de entrada" value={result.inboxExists} />
                     <Check label="Catch-All" value={result.isCatchAll} invert />
-                    <Check label="Disposable" value={result.isDisposable} invert />
-                    <Check label="Role Account" value={result.isRoleAccount} invert />
-                    <Check label="Free Provider" value={result.isFreeProvider} neutral />
+                    <Check label="Descartável" value={result.isDisposable} invert />
+                    <Check label="Conta de papel" value={result.isRoleAccount} invert />
+                    <Check label="Provedor gratuito" value={result.isFreeProvider} neutral />
                   </div>
-                  {result.suggestion && <p className="mt-3 text-sm text-yellow-600">Did you mean: <strong>{result.email.split('@')[0]}@{result.suggestion}</strong>?</p>}
+                  {result.suggestion && <p className="mt-3 text-sm text-yellow-600">Você quis dizer: <strong>{result.email.split('@')[0]}@{result.suggestion}</strong>?</p>}
                   {result.reason && result.reason !== 'OK' && <p className="mt-2 text-sm text-gray-500">{result.reason}</p>}
-                  {result.durationMs && <p className="mt-1 text-xs text-gray-400">Checked in {result.durationMs}ms</p>}
+                  {result.durationMs && <p className="mt-1 text-xs text-gray-400">Verificado em {result.durationMs}ms</p>}
                 </div>
               </div>
             )}
@@ -163,12 +164,12 @@ export default function Dashboard() {
 
         {tab === 'keys' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold mb-4">API Keys</h2>
+            <h2 className="text-lg font-semibold mb-4">Chaves de API</h2>
             <div className="flex gap-2 mb-6">
-              <input type="text" value={keyName} onChange={(e) => setKeyName(e.target.value)} placeholder="Key name (optional)"
+              <input type="text" value={keyName} onChange={(e) => setKeyName(e.target.value)} placeholder="Nome da chave (opcional)"
                 className="flex-1 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-brand-400" />
               <button onClick={createKey} className="flex items-center gap-1 px-4 py-2 bg-dog-500 hover:bg-brand-600 text-white font-medium rounded-lg">
-                <Plus className="w-4 h-4" /> Create Key
+                <Plus className="w-4 h-4" /> Criar Chave
               </button>
             </div>
             <div className="space-y-3">
@@ -178,29 +179,29 @@ export default function Dashboard() {
                     <div className="text-sm font-medium">{k.name}</div>
                     <code className="text-xs text-gray-500 font-mono">{k.key}</code>
                   </div>
-                  <span className="text-xs text-gray-400">{k.totalValidations} uses</span>
+                  <span className="text-xs text-gray-400">{k.totalValidations} usos</span>
                   <button onClick={() => copyKey(k.key)} className="text-gray-400 hover:text-gray-600">
                     <Copy className="w-4 h-4" />
                   </button>
-                  {copied === k.key && <span className="text-xs text-green-500">Copied</span>}
+                  {copied === k.key && <span className="text-xs text-green-500">Copiado</span>}
                   {k.active ? (
                     <button onClick={() => revokeKey(k.id)} className="text-red-400 hover:text-red-600"><Trash2 className="w-4 h-4" /></button>
-                  ) : <span className="text-xs text-red-400">Revoked</span>}
+                  ) : <span className="text-xs text-red-400">Revogada</span>}
                 </div>
               ))}
-              {keys.length === 0 && <p className="text-sm text-gray-500 text-center py-6">No API keys yet. Create one to get started.</p>}
+              {keys.length === 0 && <p className="text-sm text-gray-500 text-center py-6">Nenhuma chave de API ainda. Crie uma para começar.</p>}
             </div>
           </div>
         )}
 
         {tab === 'lists' && (
           <div className="bg-white rounded-xl border border-gray-200 p-6">
-            <h2 className="text-lg font-semibold mb-4">Bulk Validation</h2>
+            <h2 className="text-lg font-semibold mb-4">Validação em Lote</h2>
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-6">
               <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
-              <p className="text-sm text-gray-500 mb-2">Upload a CSV or TXT file with emails (one per line)</p>
+              <p className="text-sm text-gray-500 mb-2">Envie um arquivo CSV ou TXT com emails (um por linha)</p>
               <label className="inline-block px-4 py-2 bg-dog-500 hover:bg-brand-600 text-white font-medium rounded-lg cursor-pointer text-sm">
-                Choose File
+                Escolher Arquivo
                 <input type="file" accept=".csv,.txt" onChange={uploadFile} className="hidden" />
               </label>
             </div>
@@ -209,17 +210,17 @@ export default function Dashboard() {
                 <div key={l.id} className="flex items-center gap-3 p-4 bg-gray-50 rounded-lg">
                   <div className="flex-1">
                     <div className="text-sm font-medium">{l.name}</div>
-                    <div className="text-xs text-gray-500">{l.processed}/{l.totalEmails} processed</div>
+                    <div className="text-xs text-gray-500">{l.processed}/{l.totalEmails} processados</div>
                   </div>
                   <div className="flex gap-2 text-xs">
-                    <span className="text-green-600">{l.valid} valid</span>
-                    <span className="text-red-600">{l.invalid} invalid</span>
-                    <span className="text-yellow-600">{l.risky} risky</span>
+                    <span className="text-green-600">{l.valid} válidos</span>
+                    <span className="text-red-600">{l.invalid} inválidos</span>
+                    <span className="text-yellow-600">{l.risky} arriscados</span>
                   </div>
                   <StatusBadge status={l.status === 'completed' ? 'valid' : l.status} />
                 </div>
               ))}
-              {lists.length === 0 && <p className="text-sm text-gray-500 text-center py-6">No lists uploaded yet.</p>}
+              {lists.length === 0 && <p className="text-sm text-gray-500 text-center py-6">Nenhuma lista enviada ainda.</p>}
             </div>
           </div>
         )}
@@ -227,7 +228,7 @@ export default function Dashboard() {
         {tab === 'history' && (
           <div className="bg-white rounded-xl border border-gray-200 overflow-hidden">
             <div className="p-4 border-b border-gray-200 flex items-center justify-between">
-              <h2 className="text-lg font-semibold">Validation History</h2>
+              <h2 className="text-lg font-semibold">Histórico de Validações</h2>
               <button onClick={loadHistory} className="text-gray-400 hover:text-gray-600"><RefreshCw className="w-4 h-4" /></button>
             </div>
             <table className="w-full text-sm">
@@ -236,8 +237,8 @@ export default function Dashboard() {
                   <th className="text-left px-4 py-2 font-medium text-gray-600">Email</th>
                   <th className="text-left px-4 py-2 font-medium text-gray-600">Status</th>
                   <th className="text-left px-4 py-2 font-medium text-gray-600">Score</th>
-                  <th className="text-left px-4 py-2 font-medium text-gray-600">Duration</th>
-                  <th className="text-left px-4 py-2 font-medium text-gray-600">Date</th>
+                  <th className="text-left px-4 py-2 font-medium text-gray-600">Duração</th>
+                  <th className="text-left px-4 py-2 font-medium text-gray-600">Data</th>
                 </tr>
               </thead>
               <tbody>
@@ -247,10 +248,10 @@ export default function Dashboard() {
                     <td className="px-4 py-2"><StatusBadge status={h.status} /></td>
                     <td className="px-4 py-2">{Math.round(h.score * 100)}%</td>
                     <td className="px-4 py-2 text-gray-500">{h.durationMs}ms</td>
-                    <td className="px-4 py-2 text-gray-500">{new Date(h.createdAt).toLocaleDateString()}</td>
+                    <td className="px-4 py-2 text-gray-500">{new Date(h.createdAt).toLocaleDateString('pt-BR')}</td>
                   </tr>
                 ))}
-                {history.length === 0 && <tr><td colSpan={5} className="px-4 py-8 text-center text-gray-500">No validations yet.</td></tr>}
+                {history.length === 0 && <tr><td colSpan={5} className="px-4 py-8 text-center text-gray-500">Nenhuma validação ainda.</td></tr>}
               </tbody>
             </table>
           </div>

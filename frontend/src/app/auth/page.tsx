@@ -39,42 +39,42 @@ function AuthForm() {
   return (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-8">
       <h2 className="text-xl font-semibold mb-6 text-dog-800">
-        {isRegister ? 'Create your account' : 'Welcome back'}
+        {isRegister ? 'Crie sua conta' : 'Bem-vindo de volta'}
       </h2>
 
       <form onSubmit={submit} className="space-y-4">
         {isRegister && (
           <div>
-            <label className="block text-sm font-medium text-dog-500 mb-1">Name</label>
+            <label className="block text-sm font-medium text-dog-500 mb-1">Nome</label>
             <input type="text" value={name} onChange={(e) => setName(e.target.value)}
               className="w-full px-3 py-2 border border-dog-200 rounded-lg focus:ring-2 focus:ring-brand-400 focus:border-transparent outline-none"
-              placeholder="Your name" />
+              placeholder="Seu nome" />
           </div>
         )}
         <div>
           <label className="block text-sm font-medium text-dog-500 mb-1">Email</label>
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} required
             className="w-full px-3 py-2 border border-dog-200 rounded-lg focus:ring-2 focus:ring-brand-400 focus:border-transparent outline-none"
-            placeholder="you@company.com" />
+            placeholder="voce@empresa.com.br" />
         </div>
         <div>
-          <label className="block text-sm font-medium text-dog-500 mb-1">Password</label>
+          <label className="block text-sm font-medium text-dog-500 mb-1">Senha</label>
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required minLength={8}
             className="w-full px-3 py-2 border border-dog-200 rounded-lg focus:ring-2 focus:ring-brand-400 focus:border-transparent outline-none"
-            placeholder={isRegister ? 'Min 8 characters' : '••••••••'} />
+            placeholder={isRegister ? 'Mínimo 8 caracteres' : '••••••••'} />
         </div>
         {error && <div className="text-brand-600 text-sm bg-brand-50 p-2 rounded">{error}</div>}
         <button type="submit" disabled={loading}
           className="w-full py-2.5 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50">
-          {loading ? 'Loading...' : isRegister ? 'Create Account' : 'Sign In'}
+          {loading ? 'Carregando...' : isRegister ? 'Criar Conta' : 'Entrar'}
         </button>
       </form>
 
       <div className="mt-6 text-center text-sm text-dog-400">
         {isRegister ? (
-          <>Already have an account? <button onClick={() => setIsRegister(false)} className="text-brand-500 font-medium hover:underline">Sign in</button></>
+          <>Já tem uma conta? <button onClick={() => setIsRegister(false)} className="text-brand-500 font-medium hover:underline">Entrar</button></>
         ) : (
-          <>Don&apos;t have an account? <button onClick={() => setIsRegister(true)} className="text-brand-500 font-medium hover:underline">Sign up free</button></>
+          <>Não tem uma conta? <button onClick={() => setIsRegister(true)} className="text-brand-500 font-medium hover:underline">Cadastre-se grátis</button></>
         )}
       </div>
     </div>
@@ -91,7 +91,7 @@ export default function AuthPage() {
             <span className="text-2xl font-bold text-dog-800">BounceDog</span>
           </Link>
         </div>
-        <Suspense fallback={<div className="text-center text-dog-400">Loading...</div>}>
+        <Suspense fallback={<div className="text-center text-dog-400">Carregando...</div>}>
           <AuthForm />
         </Suspense>
       </div>
