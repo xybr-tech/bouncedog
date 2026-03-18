@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { Shield, Zap, BarChart3, Code2, CheckCircle2, XCircle, AlertTriangle, Mail, ArrowRight } from 'lucide-react';
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
@@ -21,7 +22,6 @@ function DemoValidator() {
         body: JSON.stringify({ email }),
       });
       if (res.status === 401) {
-        // Not logged in, show mock result
         setResult({
           email,
           status: 'valid',
@@ -42,17 +42,17 @@ function DemoValidator() {
 
   const statusColors: Record<string, string> = {
     valid: 'text-green-600 bg-green-50',
-    invalid: 'text-red-600 bg-red-50',
-    risky: 'text-yellow-600 bg-yellow-50',
-    unknown: 'text-gray-600 bg-gray-50',
-    error: 'text-red-600 bg-red-50',
+    invalid: 'text-brand-600 bg-brand-50',
+    risky: 'text-accent-400 bg-accent-50',
+    unknown: 'text-dog-400 bg-dog-50',
+    error: 'text-brand-600 bg-brand-50',
   };
 
   const StatusIcon = ({ status }: { status: string }) => {
     if (status === 'valid') return <CheckCircle2 className="w-5 h-5 text-green-500" />;
-    if (status === 'invalid') return <XCircle className="w-5 h-5 text-red-500" />;
-    if (status === 'risky') return <AlertTriangle className="w-5 h-5 text-yellow-500" />;
-    return <Mail className="w-5 h-5 text-gray-500" />;
+    if (status === 'invalid') return <XCircle className="w-5 h-5 text-brand-500" />;
+    if (status === 'risky') return <AlertTriangle className="w-5 h-5 text-accent-400" />;
+    return <Mail className="w-5 h-5 text-dog-400" />;
   };
 
   return (
@@ -64,18 +64,18 @@ function DemoValidator() {
           onChange={(e) => setEmail(e.target.value)}
           onKeyDown={(e) => e.key === 'Enter' && validate()}
           placeholder="test@example.com"
-          className="flex-1 px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-dog-400 focus:outline-none text-lg"
+          className="flex-1 px-4 py-3 border-2 border-dog-200 rounded-lg focus:border-brand-500 focus:outline-none text-lg"
         />
         <button
           onClick={validate}
           disabled={loading}
-          className="px-6 py-3 bg-dog-500 hover:bg-dog-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+          className="px-6 py-3 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
         >
           {loading ? '...' : 'Validate'}
         </button>
       </div>
       {result && (
-        <div className={`mt-4 p-4 rounded-lg ${statusColors[result.status] || 'bg-gray-50'}`}>
+        <div className={`mt-4 p-4 rounded-lg ${statusColors[result.status] || 'bg-dog-50'}`}>
           <div className="flex items-center gap-2 mb-2">
             <StatusIcon status={result.status} />
             <span className="font-semibold capitalize">{result.status}</span>
@@ -140,18 +140,18 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen">
       {/* Nav */}
-      <nav className="border-b border-gray-100">
+      <nav className="border-b border-dog-100">
         <div className="max-w-6xl mx-auto px-4 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <span className="text-2xl">🐕</span>
-            <span className="text-xl font-bold text-gray-900">BounceDog</span>
+          <div className="flex items-center gap-3">
+            <Image src="/logo.jpg" alt="BounceDog" width={40} height={40} className="rounded-lg" />
+            <span className="text-xl font-bold text-dog-800">BounceDog</span>
           </div>
           <div className="flex items-center gap-6">
-            <a href="#features" className="text-sm text-gray-600 hover:text-gray-900">Features</a>
-            <a href="#pricing" className="text-sm text-gray-600 hover:text-gray-900">Pricing</a>
-            <a href="#api" className="text-sm text-gray-600 hover:text-gray-900">API Docs</a>
-            <Link href="/auth" className="text-sm font-medium text-dog-600 hover:text-dog-700">Log in</Link>
-            <Link href="/auth?mode=register" className="px-4 py-2 bg-dog-500 hover:bg-dog-600 text-white text-sm font-medium rounded-lg transition-colors">
+            <a href="#features" className="text-sm text-dog-400 hover:text-dog-700">Features</a>
+            <a href="#pricing" className="text-sm text-dog-400 hover:text-dog-700">Pricing</a>
+            <a href="#api" className="text-sm text-dog-400 hover:text-dog-700">API Docs</a>
+            <Link href="/auth" className="text-sm font-medium text-brand-500 hover:text-brand-600">Log in</Link>
+            <Link href="/auth?mode=register" className="px-4 py-2 bg-brand-500 hover:bg-brand-600 text-white text-sm font-medium rounded-lg transition-colors">
               Sign Up Free
             </Link>
           </div>
@@ -159,12 +159,15 @@ export default function LandingPage() {
       </nav>
 
       {/* Hero */}
-      <section className="py-20 px-4">
+      <section className="py-20 px-4 bg-gradient-to-b from-dog-50 to-white">
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-5xl font-bold text-gray-900 mb-6 leading-tight">
+          <div className="mb-8">
+            <Image src="/logo.jpg" alt="BounceDog" width={120} height={120} className="rounded-2xl mx-auto shadow-lg" />
+          </div>
+          <h1 className="text-5xl font-bold text-dog-800 mb-6 leading-tight">
             Stop sending emails<br />that bounce.
           </h1>
-          <p className="text-xl text-gray-500 mb-10 max-w-2xl mx-auto">
+          <p className="text-xl text-dog-400 mb-10 max-w-2xl mx-auto">
             Validate email addresses in real-time with syntax checks, MX lookups, SMTP verification, and disposable email detection. One API call. Instant results.
           </p>
           <DemoValidator />
@@ -172,23 +175,23 @@ export default function LandingPage() {
       </section>
 
       {/* Social proof strip */}
-      <section className="border-y border-gray-100 py-8">
+      <section className="border-y border-dog-100 py-8 bg-dog-800 text-white">
         <div className="max-w-4xl mx-auto px-4 flex justify-center gap-12 text-center">
           <div>
-            <div className="text-2xl font-bold text-gray-900">7+</div>
-            <div className="text-sm text-gray-500">Validation checks</div>
+            <div className="text-2xl font-bold">7+</div>
+            <div className="text-sm text-dog-300">Validation checks</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-gray-900">&lt;2s</div>
-            <div className="text-sm text-gray-500">Avg response time</div>
+            <div className="text-2xl font-bold">&lt;2s</div>
+            <div className="text-sm text-dog-300">Avg response time</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-gray-900">99.9%</div>
-            <div className="text-sm text-gray-500">API uptime</div>
+            <div className="text-2xl font-bold">99.9%</div>
+            <div className="text-sm text-dog-300">API uptime</div>
           </div>
           <div>
-            <div className="text-2xl font-bold text-gray-900">REST</div>
-            <div className="text-sm text-gray-500">Simple JSON API</div>
+            <div className="text-2xl font-bold">REST</div>
+            <div className="text-sm text-dog-300">Simple JSON API</div>
           </div>
         </div>
       </section>
@@ -196,13 +199,13 @@ export default function LandingPage() {
       {/* Features */}
       <section id="features" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-12">Everything you need to clean your email lists</h2>
+          <h2 className="text-3xl font-bold text-center text-dog-800 mb-12">Everything you need to clean your email lists</h2>
           <div className="grid md:grid-cols-2 gap-8">
             {features.map((f) => (
-              <div key={f.title} className="p-6 rounded-xl border border-gray-100 hover:border-dog-200 transition-colors">
-                <f.icon className="w-8 h-8 text-dog-500 mb-4" />
-                <h3 className="text-lg font-semibold mb-2">{f.title}</h3>
-                <p className="text-gray-500">{f.desc}</p>
+              <div key={f.title} className="p-6 rounded-xl border border-dog-100 hover:border-brand-200 hover:shadow-md transition-all">
+                <f.icon className="w-8 h-8 text-brand-500 mb-4" />
+                <h3 className="text-lg font-semibold text-dog-700 mb-2">{f.title}</h3>
+                <p className="text-dog-400">{f.desc}</p>
               </div>
             ))}
           </div>
@@ -210,31 +213,31 @@ export default function LandingPage() {
       </section>
 
       {/* API Example */}
-      <section id="api" className="py-20 px-4 bg-gray-50">
+      <section id="api" className="py-20 px-4 bg-dog-800">
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4">Dead simple API</h2>
-          <p className="text-center text-gray-500 mb-10">One endpoint. One header. Done.</p>
-          <div className="bg-gray-900 rounded-xl p-6 text-sm font-mono text-gray-300 overflow-x-auto">
+          <h2 className="text-3xl font-bold text-center text-white mb-4">Dead simple API</h2>
+          <p className="text-center text-dog-300 mb-10">One endpoint. One header. Done.</p>
+          <div className="bg-dog-900 rounded-xl p-6 text-sm font-mono text-dog-300 overflow-x-auto border border-dog-600">
             <div className="text-green-400 mb-2"># Validate a single email</div>
-            <div>curl -X POST https://api.bouncedog.com/api/validate/single \</div>
-            <div className="pl-4">-H &quot;x-api-key: bd_your_key_here&quot; \</div>
-            <div className="pl-4">-H &quot;Content-Type: application/json&quot; \</div>
-            <div className="pl-4">-d &apos;{`{"email":"user@example.com"}`}&apos;</div>
+            <div className="text-white">curl -X POST https://api.bouncedog.com/api/validate/single \</div>
+            <div className="pl-4 text-white">-H &quot;x-api-key: bd_your_key_here&quot; \</div>
+            <div className="pl-4 text-white">-H &quot;Content-Type: application/json&quot; \</div>
+            <div className="pl-4 text-white">-d &apos;{`{"email":"user@example.com"}`}&apos;</div>
             <div className="mt-4 text-green-400"># Response</div>
-            <div className="text-yellow-300">{`{`}</div>
-            <div className="pl-4">&quot;email&quot;: &quot;user@example.com&quot;,</div>
-            <div className="pl-4">&quot;status&quot;: &quot;valid&quot;,</div>
-            <div className="pl-4">&quot;score&quot;: 0.95,</div>
-            <div className="pl-4">&quot;checks&quot;: {`{`}</div>
-            <div className="pl-8">&quot;syntax&quot;: true,</div>
-            <div className="pl-8">&quot;mx&quot;: true,</div>
-            <div className="pl-8">&quot;smtp&quot;: true,</div>
-            <div className="pl-8">&quot;inbox&quot;: true,</div>
-            <div className="pl-8">&quot;disposable&quot;: false,</div>
-            <div className="pl-8">&quot;catchAll&quot;: false</div>
-            <div className="pl-4">{`}`},</div>
-            <div className="pl-4">&quot;durationMs&quot;: 847</div>
-            <div className="text-yellow-300">{`}`}</div>
+            <div className="text-brand-400">{`{`}</div>
+            <div className="pl-4 text-white">&quot;email&quot;: &quot;user@example.com&quot;,</div>
+            <div className="pl-4 text-white">&quot;status&quot;: <span className="text-green-400">&quot;valid&quot;</span>,</div>
+            <div className="pl-4 text-white">&quot;score&quot;: <span className="text-accent-400">0.95</span>,</div>
+            <div className="pl-4 text-white">&quot;checks&quot;: {`{`}</div>
+            <div className="pl-8 text-dog-200">&quot;syntax&quot;: true,</div>
+            <div className="pl-8 text-dog-200">&quot;mx&quot;: true,</div>
+            <div className="pl-8 text-dog-200">&quot;smtp&quot;: true,</div>
+            <div className="pl-8 text-dog-200">&quot;inbox&quot;: true,</div>
+            <div className="pl-8 text-dog-200">&quot;disposable&quot;: false,</div>
+            <div className="pl-8 text-dog-200">&quot;catchAll&quot;: false</div>
+            <div className="pl-4 text-white">{`}`},</div>
+            <div className="pl-4 text-white">&quot;durationMs&quot;: <span className="text-accent-400">847</span></div>
+            <div className="text-brand-400">{`}`}</div>
           </div>
         </div>
       </section>
@@ -242,28 +245,28 @@ export default function LandingPage() {
       {/* Pricing */}
       <section id="pricing" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
-          <h2 className="text-3xl font-bold text-center mb-4">Simple, transparent pricing</h2>
-          <p className="text-center text-gray-500 mb-12">Start free. Scale as you grow.</p>
+          <h2 className="text-3xl font-bold text-center text-dog-800 mb-4">Simple, transparent pricing</h2>
+          <p className="text-center text-dog-400 mb-12">Start free. Scale as you grow.</p>
           <div className="grid md:grid-cols-4 gap-6">
             {plans.map((plan) => (
               <div
                 key={plan.name}
-                className={`p-6 rounded-xl border-2 ${plan.popular ? 'border-dog-400 ring-2 ring-dog-100' : 'border-gray-100'} flex flex-col`}
+                className={`p-6 rounded-xl border-2 ${plan.popular ? 'border-brand-500 ring-2 ring-brand-100' : 'border-dog-100'} flex flex-col`}
               >
                 {plan.popular && (
-                  <span className="text-xs font-semibold text-dog-600 bg-dog-50 px-2 py-1 rounded-full w-fit mb-3">
+                  <span className="text-xs font-semibold text-brand-600 bg-brand-50 px-2 py-1 rounded-full w-fit mb-3">
                     Most Popular
                   </span>
                 )}
-                <h3 className="text-lg font-semibold">{plan.name}</h3>
+                <h3 className="text-lg font-semibold text-dog-700">{plan.name}</h3>
                 <div className="mt-2 mb-1">
-                  <span className="text-3xl font-bold">{plan.price}</span>
-                  <span className="text-gray-500 text-sm">{plan.period}</span>
+                  <span className="text-3xl font-bold text-dog-800">{plan.price}</span>
+                  <span className="text-dog-400 text-sm">{plan.period}</span>
                 </div>
-                <div className="text-sm text-gray-500 mb-6">{plan.validations} validations/mo</div>
+                <div className="text-sm text-dog-400 mb-6">{plan.validations} validations/mo</div>
                 <ul className="space-y-2 mb-8 flex-1">
                   {plan.features.map((f) => (
-                    <li key={f} className="flex items-start gap-2 text-sm text-gray-600">
+                    <li key={f} className="flex items-start gap-2 text-sm text-dog-500">
                       <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
                       {f}
                     </li>
@@ -273,8 +276,8 @@ export default function LandingPage() {
                   href="/auth?mode=register"
                   className={`block text-center py-2.5 rounded-lg font-medium text-sm transition-colors ${
                     plan.popular
-                      ? 'bg-dog-500 hover:bg-dog-600 text-white'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-900'
+                      ? 'bg-brand-500 hover:bg-brand-600 text-white'
+                      : 'bg-dog-100 hover:bg-dog-200 text-dog-700'
                   }`}
                 >
                   {plan.cta}
@@ -286,13 +289,14 @@ export default function LandingPage() {
       </section>
 
       {/* CTA */}
-      <section className="py-20 px-4 bg-gray-900 text-white">
+      <section className="py-20 px-4 bg-dog-800 text-white">
         <div className="max-w-3xl mx-auto text-center">
+          <Image src="/logo.jpg" alt="BounceDog" width={80} height={80} className="rounded-xl mx-auto mb-6 shadow-lg" />
           <h2 className="text-3xl font-bold mb-4">Ready to clean your email list?</h2>
-          <p className="text-gray-400 mb-8">100 free validations. No credit card required.</p>
+          <p className="text-dog-300 mb-8">100 free validations. No credit card required.</p>
           <Link
             href="/auth?mode=register"
-            className="inline-flex items-center gap-2 px-8 py-3 bg-dog-500 hover:bg-dog-600 text-white font-semibold rounded-lg transition-colors text-lg"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-brand-500 hover:bg-brand-600 text-white font-semibold rounded-lg transition-colors text-lg"
           >
             Get Started Free <ArrowRight className="w-5 h-5" />
           </Link>
@@ -300,15 +304,16 @@ export default function LandingPage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t border-gray-100 py-8 px-4">
+      <footer className="border-t border-dog-100 py-8 px-4">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-2 text-sm text-gray-500">
-            <span>🐕</span> BounceDog &copy; {new Date().getFullYear()}
+          <div className="flex items-center gap-2 text-sm text-dog-400">
+            <Image src="/logo.jpg" alt="" width={20} height={20} className="rounded" />
+            BounceDog &copy; {new Date().getFullYear()}
           </div>
-          <div className="flex gap-6 text-sm text-gray-500">
-            <a href="#" className="hover:text-gray-900">Privacy</a>
-            <a href="#" className="hover:text-gray-900">Terms</a>
-            <a href="#" className="hover:text-gray-900">API Docs</a>
+          <div className="flex gap-6 text-sm text-dog-400">
+            <a href="#" className="hover:text-dog-700">Privacy</a>
+            <a href="#" className="hover:text-dog-700">Terms</a>
+            <a href="#" className="hover:text-dog-700">API Docs</a>
           </div>
         </div>
       </footer>

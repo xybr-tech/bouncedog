@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter } from 'next/navigation';
 import { api, getUser, logout, isLoggedIn } from '@/lib/api';
+import Image from 'next/image';
 import { Mail, Key, Upload, BarChart3, CheckCircle2, XCircle, AlertTriangle, Copy, Trash2, Plus, LogOut, RefreshCw } from 'lucide-react';
 
 type Tab = 'validate' | 'keys' | 'lists' | 'history';
@@ -94,7 +95,7 @@ export default function Dashboard() {
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <span className="text-xl">🐕</span>
+            <Image src="/logo.jpg" alt="BounceDog" width={32} height={32} className="rounded" />
             <span className="font-bold">BounceDog</span>
           </div>
           <div className="flex items-center gap-4">
@@ -109,7 +110,7 @@ export default function Dashboard() {
         <div className="flex gap-1 mb-6 bg-white rounded-lg border border-gray-200 p-1 w-fit">
           {tabs.map((t) => (
             <button key={t.id} onClick={() => setTab(t.id)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${tab === t.id ? 'bg-dog-500 text-white' : 'text-gray-600 hover:bg-gray-50'}`}>
+              className={`flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium transition-colors ${tab === t.id ? 'bg-brand-500 text-white' : 'text-gray-600 hover:bg-gray-50'}`}>
               <t.icon className="w-4 h-4" /> {t.label}
             </button>
           ))}
@@ -121,9 +122,9 @@ export default function Dashboard() {
             <div className="flex gap-2 mb-6">
               <input type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && validate()} placeholder="test@example.com"
-                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-dog-400 outline-none" />
+                className="flex-1 px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand-400 outline-none" />
               <button onClick={validate} disabled={loading}
-                className="px-6 py-2.5 bg-dog-500 hover:bg-dog-600 text-white font-medium rounded-lg disabled:opacity-50">
+                className="px-6 py-2.5 bg-dog-500 hover:bg-brand-600 text-white font-medium rounded-lg disabled:opacity-50">
                 {loading ? <RefreshCw className="w-4 h-4 animate-spin" /> : 'Validate'}
               </button>
             </div>
@@ -165,8 +166,8 @@ export default function Dashboard() {
             <h2 className="text-lg font-semibold mb-4">API Keys</h2>
             <div className="flex gap-2 mb-6">
               <input type="text" value={keyName} onChange={(e) => setKeyName(e.target.value)} placeholder="Key name (optional)"
-                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-dog-400" />
-              <button onClick={createKey} className="flex items-center gap-1 px-4 py-2 bg-dog-500 hover:bg-dog-600 text-white font-medium rounded-lg">
+                className="flex-1 px-4 py-2 border border-gray-300 rounded-lg outline-none focus:ring-2 focus:ring-brand-400" />
+              <button onClick={createKey} className="flex items-center gap-1 px-4 py-2 bg-dog-500 hover:bg-brand-600 text-white font-medium rounded-lg">
                 <Plus className="w-4 h-4" /> Create Key
               </button>
             </div>
@@ -198,7 +199,7 @@ export default function Dashboard() {
             <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center mb-6">
               <Upload className="w-8 h-8 text-gray-400 mx-auto mb-2" />
               <p className="text-sm text-gray-500 mb-2">Upload a CSV or TXT file with emails (one per line)</p>
-              <label className="inline-block px-4 py-2 bg-dog-500 hover:bg-dog-600 text-white font-medium rounded-lg cursor-pointer text-sm">
+              <label className="inline-block px-4 py-2 bg-dog-500 hover:bg-brand-600 text-white font-medium rounded-lg cursor-pointer text-sm">
                 Choose File
                 <input type="file" accept=".csv,.txt" onChange={uploadFile} className="hidden" />
               </label>
